@@ -1,0 +1,13 @@
+apiVersion: v1 
+kind: Service
+metadata: 
+  name: frontend
+  namespace: dev 
+spec:
+  type: CluserIP
+  ports:
+    - targetPort: 80
+      port: 80
+  selector: 
+        app: devnginx
+        type: frontend

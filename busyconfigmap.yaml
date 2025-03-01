@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata: 
+  name: myconfigs 
+data:
+  MYSQLPORT: '3306'
+  NGINXPORT: '80'

@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myngnix
+  labels:
+    app: mynginx 
+    type: forntend
+
+spec:
+  template: 
+    metadata:
+      name: mynginxpod 
+      labels:
+        app: mynginxpod 
+        type: frontend 
+    spec:
+      containers:
+        - name: nginx 
+          image: nginx:1.27.4 
+  replicas: 3
+  selector: 
+    matchLabels:
+      type: frontend 

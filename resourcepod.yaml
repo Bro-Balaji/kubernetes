@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+ name: devnginx 
+ namespace: dev
+ labels: 
+   app: devnginx
+   type: frontend 
+
+spec:
+  containers:
+    - name: devnginx
+      image: nginx
+      ports:
+        - containerPort: 80 
+      resources:
+        requests:
+          memory: "1Gi"
+          cpu: 1
+      limits:
+        memory: "2Gi"
+        cpu: 2
