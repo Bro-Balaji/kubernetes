@@ -1,0 +1,66 @@
+setenforce 0
+sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
+systemctl disable firewalld
+modprobe br_netfilte
+echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
+hostname -i
+hostname -f
+cat >> /etc/hosts
+cat /etc/hosts
+export http_proxy=
+export https_proxy=
+yum install -y yum-utils
+yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+yum install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+
+cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
+[kubernetes]
+name=Kubernetes
+baseurl=https://pkgs.k8s.io/core:/stable:/v1.30/rpm/
+enabled=1
+gpgcheck=1
+gpgkey=https://pkgs.k8s.io/core:/stable:/v1.30/rpm/repodata/repomd.xml.key
+EOF
+
+mkdir -p /etc/systemd/system/docker.service.d/
+cat > /etc/systemd/system/docker.service.d/http-proxy.conf
+mkdir -p /etc/systemd/system/containerd.service.d
+cat > /etc/systemd/system/containerd.service.d/http-proxy.conf
+systemctl daemon-reload
+systemctl start docker
+docker ps
+systemctl restart containerd
+yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
+
+
+systemctl enable --now kubelet
+containerd config default > /etc/containerd/config.toml
+systemctl status kubelet
+ip r
+export no_proxy=localhost,10.96.0.0/12
+kubeadm init --v=5
+
+systemctl restart containerd
+
+vi /etc/containerd/config.toml
+systemctl restart containerd
+kubeadm init --v=5
+
+
+
+
+
+mkdir -p /etc/systemd/system/containerd.service.d
+cat > /etc/systemd/system/containerd.service.d/http-proxy.conf
+
+[Service]
+Environment="HTTP_PROXY=http://jpe3proxy.jaws.jio.com:8080"
+
+
+[Service]
+Environment="HTTPS_PROXY=http://jpe3proxy.jaws.jio.com:8080"
+
+
+[Service]
+Environment="NO_PROXY=localhost,10.96.0.0/12"
