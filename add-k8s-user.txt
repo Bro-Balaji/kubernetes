@@ -1,0 +1,33 @@
+openssl genpkey -out balaji.key -algorithm Ed25519
+cat balaji.key 
+openssl req -new -key balaji.key -out balaji.csr -subj "/CN=balaji,/O=edit"
+cat balaji.csr |base64 |tr -d '\n'
+
+cat a.yaml
+apiVersion: certificates.k8s.io/v1
+kind: CertificateSigningRequest
+metadata:
+  name: balaji
+spec:
+  request:<secret> 
+  signerName: kubernetes.io/kube-apiserver-client
+  expirationSeconds: 86400  # one day
+  usages:
+  - client auth
+
+kubectl apply -f a.yaml 
+kubectl certificate approve balaji
+kubectl get csr
+kubectl describe csr
+kubectl get csr/balaji -o jsonpath="{.status.certificate}" |base64 -d > balaji.crt
+kubectl config get-clusters
+cp ~/.kube/config new-config
+kubectl --kubeconfig new-config config set-credentials balaji --client-key balaji.key --client-certificate balaji.csr --embed-certs=true
+kubectl --kubeconfig new-config config set-context balaji --cluster kubernetes --user balaji
+kubectl config get-clusters
+kubectl create clusterrole readonly --verb=list,get --resource=pods
+kubectl create clusterrolebinding readonly --clusterrole=readonly --user=balaji
+kubectl get clusterrole
+kubectl get clusterrolebinding 
+kubectl auth can-i get pods --kubeconfig=new-config --namespace=default --as=balaji
+kubectl auth can-i get deployments --kubeconfig=new-config --namespace=default --as=balaji
