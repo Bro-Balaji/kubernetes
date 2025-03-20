@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: busybox 
+  labels: 
+    env: dev 
+    type: linux
+
+spec:
+  containers:
+    - name: busybox 
+      image: nginx 
+      envFrom:
+        - configMapRef:
+            name: myconfigs

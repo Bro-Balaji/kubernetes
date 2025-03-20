@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Pod
+metadata:
+ name: devnginx 
+ namespace: dev
+ labels: 
+   app: devnginx
+   type: frontend 
+
+spec:
+ containers:
+  - name: devnginx
+    image: nginx 
+
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSeletorTerms:
+        - matchExpressions:
+          - key: size 
+            operator: In
+            values:   # we can have multiple conditions for a pod to be scheduled on the node 
+              - Large 
+              - Medium 
