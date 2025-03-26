@@ -1,0 +1,40 @@
+helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/
+https://github.com/kubernetes/dashboard/releases/download/kubernetes-dashboard-7.11.1/kubernetes-dashboard-7.11.1.tgz
+helm upgrade --install kubernetes-dashboard kubernetes-dashboard-7.11.1.tgz --create-namespace --namespace kubernetes-dashboard
+kubectl expose deployment kubernetes-dashboard-kong --name k8s-dash-svc --type NodePort --port 443 --target-port 8443 -n kubernetes-dashboard
+
+[root@controlplane tmp]# kgs -A
+NAMESPACE              NAME                                   TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                  AGE     SELECTOR
+default                kubernetes                             ClusterIP   10.96.0.1        <none>        443/TCP                  3d17h   <none>
+kube-system            kube-dns                               ClusterIP   10.96.0.10       <none>        53/UDP,53/TCP,9153/TCP   3d17h   k8s-app=kube-dns
+kubernetes-dashboard   k8s-dash-svc                           NodePort    10.103.49.131    <none>        443:31325/TCP            3m1s    app.kubernetes.io/component=app,app.kubernetes.io/instance=kubernetes-dashboard,app.kubernetes.io/name=kong
+kubernetes-dashboard   kubernetes-dashboard-api               ClusterIP   10.109.138.118   <none>        8000/TCP                 5m40s   app.kubernetes.io/instance=kubernetes-dashboard,app.kubernetes.io/name=kubernetes-dashboard-api,app.kubernetes.io/part-of=kubernetes-dashboard
+kubernetes-dashboard   kubernetes-dashboard-auth              ClusterIP   10.109.36.113    <none>        8000/TCP                 5m40s   app.kubernetes.io/instance=kubernetes-dashboard,app.kubernetes.io/name=kubernetes-dashboard-auth,app.kubernetes.io/part-of=kubernetes-dashboard
+kubernetes-dashboard   kubernetes-dashboard-kong-proxy        ClusterIP   10.99.220.241    <none>        443/TCP                  5m40s   app.kubernetes.io/component=app,app.kubernetes.io/instance=kubernetes-dashboard,app.kubernetes.io/name=kong
+kubernetes-dashboard   kubernetes-dashboard-metrics-scraper   ClusterIP   10.100.239.37    <none>        8000/TCP                 5m40s   app.kubernetes.io/instance=kubernetes-dashboard,app.kubernetes.io/name=kubernetes-dashboard-metrics-scraper,app.kubernetes.io/part-of=kubernetes-dashboard
+kubernetes-dashboard   kubernetes-dashboard-web               ClusterIP   10.106.142.220   <none>        8000/TCP                 5m40s   app.kubernetes.io/instance=kubernetes-dashboard,app.kubernetes.io/name=kubernetes-dashboard-web,app.kubernetes.io/part-of=kubernetes-dashboard
+levoai                 nginx-service                          NodePort    10.102.114.81    <none>        80:30080/TCP             3d2h    app=nginx-logging
+
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: admin-user
+  namespace: kube-system
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: admin-user
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+  - kind: ServiceAccount
+    name: admin-user
+    namespace: kube-system
+
+
+kubectl create token admin-user -n kube-system
