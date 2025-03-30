@@ -1,0 +1,16 @@
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+custom-values.yaml
+prometheus:
+  service:
+    type: NodePort
+grafana:
+  service:
+    type: NodePort
+
+
+helm upgrade --install kube-prometheus-stack prometheus-community/kube-prometheus-stack -f custom-values.yaml
+
+
+kube-prometheus-stack-grafana                    NodePort    10.96.199.117    <none>        80:30118/TCP
+kube-prometheus-stack-prometheus                 NodePort    10.106.192.197   <none>        9090:30090/TCP,8080:30528/TCP
