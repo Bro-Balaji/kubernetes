@@ -1,0 +1,49 @@
+1. Error: Pod Eviction Due to Resource Constraints
+
+Description: Pods may be evicted due to insufficient resources like CPU or memory.
+Remediation: Scale resources accordingly, set resource limits and requests, optimize application efficiency, and consider horizontal pod autoscaling.
+
+2. Error: CrashLoopBackOff
+
+Description: A pod enters a continuous crash and restart loop.
+Remediation: Examine pod logs, fix application code or configuration issues, ensure required dependencies are available, and use readiness and liveness probes.
+
+3. Error: ImagePullBackOff
+
+Description: Kubernetes is unable to pull the specified container image.
+Remediation: Verify image availability, repository credentials, image name, and version. Check the network connectivity and image pull policy.
+
+4. Error: Unauthorized or Forbidden Access
+
+Description: Users or services are denied access to Kubernetes resources.
+Remediation: Check RBAC rules, user roles, service account permissions, and cluster roles. Authenticate with the correct credentials.
+
+5. Error: Services Not Discoverable
+
+Description: Services can’t be accessed within the cluster or externally.
+Remediation: Validate service configurations, ports, selectors, and endpoints. Ensure network policies and firewalls allow traffic.
+
+6. Error: Pending Pods
+
+Description: Pods remain in a pending state and don’t start running.
+Remediation: Review resource availability, node conditions, and scheduling constraints. Check if there are nodes with sufficient resources.
+
+7. Error: Persistent Volume Issues
+
+Description: Persistent Volume Claims (PVCs) fail or don’t bind to available volumes.
+Remediation: Verify PVC and PV configurations, storage class availability, and node volume mounts. Troubleshoot storage provider connectivity.
+
+8. Error: Ingress Not Working
+
+Description: Ingress resources are misconfigured, causing external access issues.
+Remediation: Review Ingress controller settings, host and path configurations, and DNS resolution. Check for potential TLS certificate problems.
+
+9. Error: Node Unreachable
+
+Description: Nodes become unreachable or are marked as “NotReady.”
+Remediation: Investigate network connectivity, node health, firewall rules, and potential node failures. Monitor system logs and node status.
+
+10. Error: Out of Resource Quota
+
+Description: The Kubernetes cluster exceeds allocated resource quotas.
+Remediation: Set appropriate resource quotas for namespaces, monitor cluster resource utilization, optimize resource usage, and consider vertical pod autoscaling.
