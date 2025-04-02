@@ -1,0 +1,8 @@
+operators are used to manage and automate CRD's
+
+example of operators
+
+Cert-Manager
+Promethues Operator
+Horizontal pod autoscaler
+nginx ingress control operator 
